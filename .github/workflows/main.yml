@@ -1,5 +1,5 @@
 on:
-  pull_request:
+  push:
     branches: [ main ]
 
 jobs:
@@ -9,10 +9,7 @@ jobs:
     steps:
       -  uses: actions/checkout@v2
       -  uses: sfdx-actions/setup-sfdx@v1
-         with:
-           sfdx-auth-url: ${{ secrets.AUTH_SECRET }}
-      -  name: 'Convert Metadata'
-         run: sfdx force:source:convert --rootdir=force-app --outputdir=convert
-
-      -  name: 'Run Validation on Metadata'
-         run: sfdx force:mdapi:deploy --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
+        
+      -  name: 'Salesforce Org Authentication' 
+         run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=${{ secrets.SALESFORCE_SERVER_KEY }} --setdefaultdevhubusername
+    
