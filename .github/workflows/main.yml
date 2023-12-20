@@ -8,8 +8,9 @@ jobs:
 
     steps:
       -  uses: actions/checkout@v2
-      -  uses: sfdx-actions/setup-sfdx@v1
+      -  run: npm install sfdx-cli -g
+      -  run: echo "${{ secrets.SALESFORCE_SERVER_KEY }}" > server.key
         
       -  name: 'Salesforce Org Authentication' 
-         run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=${{ secrets.SALESFORCE_SERVER_KEY }} --setdefaultdevhubusername
+         run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --setdefaultdevhubusername
     
