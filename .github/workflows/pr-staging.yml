@@ -20,8 +20,8 @@ jobs:
           git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
           git fetch --all
           git checkout -b pr
-          git --no-pager diff --name-status staging origin/main
-          sgd --to origin/staging --from origin/main --repo . --output .
+          git --no-pager diff --name-status origin/staging..
+          sgd --to pr --from origin/staging --repo . --output .
           cat package/package.xml     
 
       -  name: 'Convert Metadata'
