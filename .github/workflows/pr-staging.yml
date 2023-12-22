@@ -16,17 +16,18 @@ jobs:
       
       -  name: 'Install the app and create Delta'
          run: |
-          sudo npm install sfdx-git-delta@latest -g 
-          sfdx plugins:install sfdx-git-delta
+          echo y | sfdx plugins:install sfdx-git-delta
+          sfdx plugins
           git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
           git fetch --all
           git checkout -b pr
           git --no-pager diff --name-status origin/staging..
-          sfdx sgd:source:delta --to origin/pr --from origin/staging --repo . --output .
+
+          sfdx sgd:source:delta --to pr --from origin/staging --repo . --output .
           cat package/package.xml     
 
       -  name: 'Convert Metadata'
          run: sfdx force:source:convert --manifest=package/package.xml --outputdir=convert
 
       -  name: 'Run Validation on Metadata'
-         run: sfdx force:mdapi:deploy --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
+         run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
