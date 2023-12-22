@@ -16,6 +16,7 @@ jobs:
       -  name: 'Install the app and create Delta'
          run: |
           echo y | sfdx plugins:install sfdx-git-delta
+          sfdx plugins
           git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
           git fetch --all
           git checkout -b pr
@@ -27,4 +28,4 @@ jobs:
          run: sfdx force:source:convert --manifest=package/package.xml --outputdir=convert
 
       -  name: 'Run Validation on Metadata'
-         run: sfdx force:mdapi:deploy --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
+         run: sfdx force:mdapi:deploy --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
