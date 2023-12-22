@@ -3,7 +3,7 @@ trigger AccountAction on Account (after insert, after Update) {
        // AccountActionHandler.AccountUpdate(trigger.new);
     }
 if(trigger.isUpdate && trigger.isAfter){
-   // AccountActionHandler.OpportunityCreate(trigger.newMap, trigger.oldMap);//
+   // AccountActionHandler.OpportunityCreate(trigger.newMap, trigger.oldMap);////
 }
 
 }
