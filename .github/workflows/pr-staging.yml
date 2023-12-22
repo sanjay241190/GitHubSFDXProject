@@ -15,17 +15,29 @@ jobs:
       
       -  name: 'Install the app and create Delta'
          run: |
-          sudo npm install sfdx-git-delta@latest -g 
           echo y | sfdx plugins:install sfdx-git-delta
+          sfdx plugins
           git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
           git fetch --all
           git checkout -b pr
           git --no-pager diff --name-status origin/staging..
-          sfdx sgd:source:delta --to origin/pr --from origin/staging --repo . --output .
+          sfdx sgd:source:delta --to pr --from origin/staging --repo . --output .
           cat package/package.xml     
 
       -  name: 'Convert Metadata'
          run: sfdx force:source:convert --manifest=package/package.xml --outputdir=convert
 
       -  name: 'Run Validation on Metadata'
-         run: sfdx force:mdapi:deploy --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
+         #run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
+         run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --checkonly -w30
+
+      - name: 'Merge Branches'
+        if: success() && github.event_name == 'pull_request'
+        run: |
+          #git checkout origin/pr  # Checkout the PR branch
+          git merge origin/staging --no-edit  # Merge staging branch without editing commit message
+          git push origin pr  # Push the merged changes back to the PR branch
+
+      -  name: 'Deploy Metadata'
+         #run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
+         run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert -w30
