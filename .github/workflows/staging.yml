@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ staging ]
+    branches: [ staging_temp ]
 
 jobs:
   build:
@@ -16,15 +16,17 @@ jobs:
       
       -  name: 'Install the app and create Delta'
          run: |
-          sudo npm install sfdx-git-delta@latest -g
+          echo y | sfdx plugins:install sfdx-git-delta
+          sfdx plugins
           git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
           git fetch --all
           git --no-pager diff --name-status staging origin/main
-          sgd --to staging --from origin/main --repo . --output .
+          sfdx sgd:source:delta --to staging --from origin/main --repo . --output .
           cat package/package.xml       
 
       -  name: 'Convert Metadata'
          run: sfdx force:source:convert --manifest=package/package.xml --outputdir=convert
 
       -  name: 'Deploy Metadata'
-         run: sfdx force:mdapi:deploy --deploydir=convert --testlevel=RunLocalTests -w30
+         #run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
+         run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert -w30

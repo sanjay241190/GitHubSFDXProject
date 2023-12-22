@@ -40,4 +40,6 @@ jobs:
 
       -  name: 'Deploy Metadata'
          #run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
+
          run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert -w30
+
