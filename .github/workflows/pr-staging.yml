@@ -30,3 +30,14 @@ jobs:
       -  name: 'Run Validation on Metadata'
          #run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
          run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --checkonly -w30
+
+      - name: 'Merge Branches'
+        if: success() && github.event_name == 'pull_request'
+        run: |
+          git checkout origin/pr  # Checkout the PR branch
+          git merge origin/staging --no-edit  # Merge staging branch without editing commit message
+          git push origin origin/pr  # Push the merged changes back to the PR branch
+
+      -  name: 'Deploy Metadata'
+         #run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert --testlevel=RunLocalTests --checkonly -w30
+         run: sfdx force:mdapi:deploy -u ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --deploydir=convert -w30
