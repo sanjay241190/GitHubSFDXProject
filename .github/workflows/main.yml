@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 180
 
     container:
-      image: salesforce/cli:2.92.5-full
+      image: sanjaxsf/sfdx-delta-cli:latest
 
     env:
       ORG_NAME: NCSIT-DevOpsOrg
