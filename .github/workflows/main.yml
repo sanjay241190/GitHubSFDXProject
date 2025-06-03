@@ -27,6 +27,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Check Git is Working
+        run: |
+          git --version
+          git rev-parse HEAD
+
+      - name: Debug Git Log
+        run: git log --oneline -n 5
+
+
              
       - name: Run sfdx git delta and create delta
         run: |
