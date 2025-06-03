@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 180
 
-    container:
-      image: sanjaxsf/sfdx-delta-cli:latest
+    #container:
+      #image: sanjaxsf/sfdx-delta-cli:latest
 
     env:
       ORG_NAME: NCSIT-DevOpsOrg
@@ -27,6 +27,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Install sfdx git delta
+        run: |
+          npm install -g sfdx-cli
+          sfdx plugins:install sfdx-git-delta --force
+
           
       - name: Mark workspace as safe directory
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
