@@ -32,10 +32,8 @@ jobs:
       - name: Install sfdx git delta
         run: |
           npm install -g @salesforce/cli
-          sf plugins install sfdx-git-delta --force
-          sf git-delta --version
-
-          
+          echo y | sf plugins install "sfdx-git-delta@${{ vars.SGD_VERSION }}"
+                   
       - name: Mark workspace as safe directory
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
@@ -60,7 +58,7 @@ jobs:
           
           mkdir force-app-delta
           
-          sf sgd source delta --to HEAD --from HEAD^ -s force-app --generate-delta --output ./force-app-delta/
+          sf sgd source delta --to HEAD --from HEAD^ -s force-app --generate-delta --output-dir ./force-app-delta/
       
       - name: Display Package to Deploy
         run: cat force-app-delta/package/package.xml
