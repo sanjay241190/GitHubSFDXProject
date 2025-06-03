@@ -5,7 +5,7 @@
     <filters>
         <field>CONTRACT.STATUS_CODE</field>
         <operation>equals</operation>
-        <value>D</value>
+        <value>E</value>
     </filters>
     <label>All Draft Contracts</label>
 </ListView>
