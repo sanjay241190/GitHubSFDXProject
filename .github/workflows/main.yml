@@ -6,6 +6,7 @@ on:
       - develop
       - r1-release
       - main
+      - feature/*
 
 jobs:
   merge_pull_request:
