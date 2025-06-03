@@ -55,7 +55,7 @@ jobs:
 
       - name: Run sfdx git delta and create delta
         run: |
-          export HOME="/root"
+          #export HOME="/root"
           mkdir force-app-delta
           sf sgd source delta --to HEAD --from HEAD^ -s force-app --generate-delta --output ./force-app-delta/
       
