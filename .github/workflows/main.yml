@@ -39,8 +39,14 @@ jobs:
       - name: Debug Git Log
         run: git log --oneline -n 5
 
+      - name: Ensure we're in the repo root
+        run: cd "$GITHUB_WORKSPACE"
 
-             
+      - name: Get Git SHA for HEAD and HEAD^
+        run: |
+            echo "HEAD: $(git rev-parse HEAD)"
+            echo "HEAD^: $(git rev-parse HEAD^)"
+
       - name: Run sfdx git delta and create delta
         run: |
           export HOME="/root"
