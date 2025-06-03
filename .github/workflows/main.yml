@@ -5,7 +5,7 @@ on:
     branches:
       - develop
       - r1-release
-      - master
+      - main
 
 jobs:
   merge_pull_request:
