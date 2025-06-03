@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 180
 
     container:
-      image: salesforce/cli
+      image: salesforce/cli:2.92.5-full
 
     env:
       ORG_NAME: NCSIT-DevOpsOrg
