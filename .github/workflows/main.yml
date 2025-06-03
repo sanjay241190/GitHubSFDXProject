@@ -22,13 +22,14 @@ jobs:
       # Add additional Salesforce variables if needed, using secrets for sensitive info
 
     steps:
+      - name: Install sfdx-git-delta plugin
+        run: sfdx plugins:install sfdx-git-delta --force
+        
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: Install sfdx-git-delta plugin
-        run: sf plugins:install sfdx-git-delta --force
-        
+             
       - name: Run sfdx git delta and create delta
         run: |
           export HOME="/root"
