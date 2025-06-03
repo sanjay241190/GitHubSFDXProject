@@ -26,3 +26,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
+      - name: Run sfdx git delta and create delta
+        run: |
+          export HOME="/root"
+          mkdir force-app-delta
+          sf sgd source delta --to HEAD --from HEAD^ -s force-app --generate-delta --output ./force-app-delta/
+      
+      - name: Display Package to Deploy
+        run: cat force-app-delta/package/package.xml
+      
+      - name: Display Package to Destroy
+        run: cat force-app-delta/destructiveChanges/destructiveChanges.xml
